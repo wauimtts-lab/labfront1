@@ -1,0 +1,15 @@
+.recipe-page { max-width: 700px; }
+.recipe-back { font-size: 14px; color: #ea580c; }
+.recipe-name { font-size: 26px; margin: 8px 0 4px; }
+.recipe-meta { color: #777; margin-bottom: 20px; }
+.recipe-block {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.recipe-block h2 { font-size: 17px; margin-bottom: 10px; }
+.recipe-block ul,
+.recipe-block ol { padding-left: 20px; line-height: 1.7; }
+.recipe-not-found { color: #888; }
