@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { askQuestion } from '../api/mockApi';
+import { askQuestion } from '../api/api';
 import './ChatInterface.css';
 
 const ChatInterface = () => {
@@ -24,15 +24,24 @@ const ChatInterface = () => {
     setInput('');
     setLoading(true);
 
-    const answer = await askQuestion(input);
-
-    const botMsg = {
-      id: (Date.now() + 1).toString(),
-      role: 'assistant',
-      content: answer,
-    };
-    setMessages((prev) => [...prev, botMsg]);
-    setLoading(false);
+    try {
+      const answer = await askQuestion(input);
+      setMessages((prev) => [
+        ...prev,
+        { id: (Date.now() + 1).toString(), role: 'assistant', content: answer },
+      ]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: 'Не удалось получить ответ. Проверьте соединение с сервером.',
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleKey = (e) => {
@@ -44,7 +53,7 @@ const ChatInterface = () => {
       <div className="chat-messages">
         {messages.length === 0 && (
           <p className="chat-hint">
-            Задайте вопрос, например: «Что приготовить из курицы и риса?»
+            Задайте вопрос, например: «Покажи работы Айвазовского» или «Составь маршрут по теме пейзаж»
           </p>
         )}
         {messages.map((m) => (
@@ -60,7 +69,6 @@ const ChatInterface = () => {
         {loading && <div className="chat-typing">ИИ печатает…</div>}
         <div ref={bottomRef} />
       </div>
-
       <div className="chat-input-row">
         <input
           className="chat-input"
